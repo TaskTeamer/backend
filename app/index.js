@@ -1,6 +1,6 @@
 const dotenv=require('dotenv').config()
 const express=require('express')
-const {save,getAll}=require("./repositories/userRepository")
+const {register,getUsers}=require("./router/userRouter")
 const db=require("./config/db")
 db.connect().then("Db Connected").catch(e=>console.log(e))
 
@@ -11,8 +11,8 @@ db.connect().then("Db Connected").catch(e=>console.log(e))
 const app=express()
 app.use(express.json())
 
-app.get("/users",getAll)
-app.post("/users",save)
+app.get("/users",getUsers)
+app.post("/users",register)
 
 app.listen(3000,()=>{
     console.log(process.env.DBPASSWORD)
