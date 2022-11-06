@@ -3,6 +3,11 @@ const db=require("../config/db")
 const getAll=async function(){
     return await (await db.query("select * from users")).rows
 }
+const getUserByCredentials=async(user)=>{
+    email=user.email;
+    password=user.password;
+    return await (await db.query("select * from users where email=$1 and password=$2",[email,password])).rows
+}
 
 const save=async function(req){
     const first_name=req.body.first_name
@@ -13,4 +18,4 @@ const save=async function(req){
     await db.query("insert into users (first_name,last_name,email,password,user_name) values ($1,$2,$3,$4,$5)",[first_name,last_name,email,password,user_name])
     
 }
-module.exports={getAll,save}
+module.exports={getAll,save,getUserByCredentials}

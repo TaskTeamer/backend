@@ -1,4 +1,5 @@
-const {save,getAll}=require("../repositories/userRepository")
+const {save,getAll,getUserByCredentials}=require("../repositories/userRepository")
+const {generateAccessToken,generateRefreshToken}=require("../security/helper")
 
 const getUsers=async function(req,res){
     try {
@@ -17,4 +18,17 @@ const register=async function(req,res){
     }
     
 }
-module.exports={register,getUsers}
+const login=(req,res)=>{
+    getUserByCredentials(req.body).then(user=>{
+        if(!user) res.status(404).send({message:"User Not Found"})
+        user={
+            tokens:{
+                accessToken:generateAccessToken(user),
+                refreshToken:generateRefreshToken(user)
+            }
+        }
+        delete user.password;
+        res.status(200).send(user);
+    })
+}
+module.exports={register,getUsers,login}
