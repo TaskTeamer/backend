@@ -6,7 +6,8 @@ const getAll=async function(){
 const getUserByCredentials=async(user)=>{
     email=user.email;
     password=user.password;
-    return await (await db.query("select * from users where email=$1 and password=$2",[email,password])).rows
+    let users= await (await db.query("select * from users where email=$1 and password=$2",[email,password])).rows
+    return users[0]
 }
 
 const save=async function(req){

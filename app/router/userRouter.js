@@ -1,5 +1,5 @@
 const {save,getAll,getUserByCredentials}=require("../repositories/userRepository")
-const {generateAccessToken,generateRefreshToken}=require("../security/helper")
+const {generateAccessToken,generateRefreshToken,hashPassword}=require("../security/helper")
 
 const getUsers=async function(req,res){
     try {
@@ -11,6 +11,7 @@ const getUsers=async function(req,res){
 }
 const register=async function(req,res){
     try {
+        req.body.password=hashPassword(req.body.password)
         await save(req)
         res.send("User registered")
     } catch (error) {
@@ -19,8 +20,9 @@ const register=async function(req,res){
     
 }
 const login=(req,res)=>{
+    req.body.password=hashPassword(req.body.password)
     getUserByCredentials(req.body).then(user=>{
-        if(!user) res.status(404).send({message:"User Not Found"})
+        if(user==null) res.status(404).send({message:"User Not Found"})
         user={
             tokens:{
                 accessToken:generateAccessToken(user),
