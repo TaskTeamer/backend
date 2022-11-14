@@ -1,5 +1,7 @@
 const {save,getAll,getUserByCredentials}=require("../repositories/userRepository")
 const {generateAccessToken,generateRefreshToken,hashPassword}=require("../security/helper")
+const httpStatus=require("http-status")
+
 
 const getUsers=async function(req,res){
     try {
@@ -13,16 +15,16 @@ const register=async function(req,res){
     try {
         req.body.password=hashPassword(req.body.password)
         await save(req)
-        res.send("User registered")
+        res.status(httpStatus.CREATED).send({message:"User registered"})
     } catch (error) {
-        res.status(400).send(error)
+        res.status(httpStatus.BAD_REQUEST).send(error)
     }
     
 }
 const login=(req,res)=>{
     req.body.password=hashPassword(req.body.password)
     getUserByCredentials(req.body).then(user=>{
-        if(user==null) res.status(404).send({message:"User Not Found"})
+        if(user==null) res.status(httpStatus.NOT_FOUND).send({message:"User Not Found"})
         user={
             tokens:{
                 accessToken:generateAccessToken(user),
@@ -30,7 +32,7 @@ const login=(req,res)=>{
             }
         }
         delete user.password;
-        res.status(200).send(user);
+        res.status(httpStatus.OK).send(user);
     })
 }
 module.exports={register,getUsers,login}
