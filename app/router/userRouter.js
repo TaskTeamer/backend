@@ -15,7 +15,7 @@ const register=async function(req,res){
     try {
         req.body.password=hashPassword(req.body.password)
         await save(req)
-        res.send("User registered")
+        res.status(httpStatus.CREATED).send({message:"User registered"})
     } catch (error) {
         res.status(httpStatus.BAD_REQUEST).send(error)
     }

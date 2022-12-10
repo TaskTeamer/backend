@@ -1,12 +1,14 @@
+
 const {getByUserId,saveProject}=require("../repositories/projectRepository")
 const httpStatus=require("http-status")
 
 
 const getProjectByUserId=async function(req,res){
     try{
-        res.send(await getByUserId(req.params.userid))
+        res.status(httpStatus.OK).send(await getByUserId(req.params.userid))
     }
     catch(error){
+
         res.status(httpStatus.NOT_FOUND).send(error)
     }
 }
