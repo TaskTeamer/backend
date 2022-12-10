@@ -1,7 +1,7 @@
 const dotenv=require('dotenv').config()
 const express=require('express')
 const {register,getUsers,login,getUserByUserNameController}=require("./router/userRouter")
-const {getProjectByUserId,saveProjectController}=require("./router/projectRouter")
+const {getProjectByUserId,saveProjectController,deleteProjectController}=require("./router/projectRouter")
 const db=require("./config/db")
 db.connect().then("Db Connected").catch(e=>console.log(e))
 
@@ -19,6 +19,7 @@ app.post("/users",register)
 
 app.get("/projects/getbyuserid/:userid",getProjectByUserId)
 app.post("/projects",saveProjectController)
+app.delete("/projects/:id",deleteProjectController)
 
 
 app.listen(3000,()=>{

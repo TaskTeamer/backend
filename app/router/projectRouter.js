@@ -1,5 +1,5 @@
 
-const {getByUserId,saveProject}=require("../repositories/projectRepository")
+const {getByUserId,saveProject,deleteProject}=require("../repositories/projectRepository")
 const httpStatus=require("http-status")
 
 
@@ -21,4 +21,13 @@ const saveProjectController=async function(req,res){
         res.status(httpStatus.BAD_REQUEST).send("Bad Request")
     }
 }
-module.exports={getProjectByUserId,saveProjectController}
+const deleteProjectController=async function(req,res){
+    try{
+        deleteProject(req.params.id)
+        res.status(httpStatus.OK).send("Deleted")
+
+    }catch{
+        res.status(httpStatus.BAD_REQUEST).send("Bad Request")
+    }
+}
+module.exports={getProjectByUserId,saveProjectController,deleteProjectController}
