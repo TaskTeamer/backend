@@ -19,8 +19,4 @@ const saveProject=async(project)=>{
     await db.query("insert into projects (name,team_id,creator_id) values ($1,$2,$3)",[project.name,newTeam[0].id,ownerId])
 
 }
-const addTeamUser=async(t,newTeam)=>{
-    await db.query("insert into team_users (user_id,team_id) values ($1,$2)",[t,newTeam[0].id])
-
-}
 module.exports={getByUserId,saveProject}
