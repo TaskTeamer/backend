@@ -7,7 +7,7 @@ const getUsers=async function(req,res){
     try {
         res.send(await getAll())
     } catch (error) {
-        res.status(400).send(error)
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error)
     }
     
 }
