@@ -1,6 +1,6 @@
 const dotenv=require('dotenv').config()
 const express=require('express')
-const {register,getUsers,login}=require("./router/userRouter")
+const {register,getUsers,login,getUserByUserNameController}=require("./router/userRouter")
 const {getProjectByUserId,saveProjectController}=require("./router/projectRouter")
 const db=require("./config/db")
 db.connect().then("Db Connected").catch(e=>console.log(e))
@@ -13,6 +13,7 @@ const app=express()
 app.use(express.json())
 
 app.get("/users",getUsers)
+app.get("/users/getbyusername/:username",getUserByUserNameController)
 app.post("/users/login",login)
 app.post("/users",register)
 

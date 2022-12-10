@@ -1,4 +1,4 @@
-const {save,getAll,getUserByCredentials}=require("../repositories/userRepository")
+const {save,getAll,getUserByCredentials,getUserByUserName}=require("../repositories/userRepository")
 const {generateAccessToken,generateRefreshToken,hashPassword}=require("../security/helper")
 const httpStatus=require("http-status")
 
@@ -10,6 +10,13 @@ const getUsers=async function(req,res){
         res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error)
     }
     
+}
+const getUserByUserNameController=async function(req,res){
+    try {
+        res.send(await getUserByUserName(req.params.username))
+    } catch (error) {
+        res.status(httpStatus.NOT_FOUND).send("User not found")
+    }
 }
 const register=async function(req,res){
     try {
@@ -35,4 +42,4 @@ const login=(req,res)=>{
         res.status(httpStatus.OK).send(user);
     })
 }
-module.exports={register,getUsers,login}
+module.exports={register,getUsers,login,getUserByUserNameController}
