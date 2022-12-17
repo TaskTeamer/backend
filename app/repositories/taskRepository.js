@@ -52,4 +52,15 @@ const deleteTask=async(taskId)=>{
     await db.query("delete from tasks where id=$1",[taskId])
 
 }
-module.exports={getAll,save,getByTaskId,changeTaskStatus,changeTaskSection,deleteTask,getByProjectId,saveTask}
+const assignTask=async(assignedTask)=>{
+    let addedBy=assignedTask.addedBy
+    let taskId=assignedTask.taskId
+    let listOfAssigned=assignedTask.listOfAssigned
+    let query=""
+    listOfAssigned.map(async a=>{
+        query+="("+a+","+taskId +","+addedBy+")"+","
+    }) 
+    console.log('first', query.substring(0,query.length-1))
+    await db.query("insert into user_tasks (assigned_id,task_id,added_by) values "+ query.substring(0,query.length-1))
+}
+module.exports={getAll,save,getByTaskId,changeTaskStatus,changeTaskSection,deleteTask,getByProjectId,saveTask,assignTask}
