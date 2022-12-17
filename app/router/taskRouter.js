@@ -1,5 +1,5 @@
 const httpStatus = require("http-status")
-const {getByTaskId,getAll,save,changeTaskStatus,changeTaskSection,deleteTask,getByProjectId}=require("../repositories/taskRepository")
+const {getByTaskId,getAll,save,changeTaskStatus,changeTaskSection,deleteTask,getByProjectId,saveTask}=require("../repositories/taskRepository")
 
 const getTaskByTaskId=async function(req,res){
     try{
@@ -17,15 +17,15 @@ const getTasks=async function(req,res){
     }
     
 }
-const saveTask=async function(req,res){
-    try {
-        await save(req)
-        res.send("Task registered")
-    } catch (error) {
-        res.status(400).send(error)
-    }
+// const saveTask=async function(req,res){
+//     try {
+//         await save(req)
+//         res.send("Task registered")
+//     } catch (error) {
+//         res.status(400).send(error)
+//     }
     
-}
+// }
 const updateTaskStatus=async function(req,res){
     try{
         await changeTaskStatus(req.body);
@@ -57,4 +57,12 @@ const getByProjectIdController=async(req,res)=>{
         res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error)
     }
 }
-module.exports={getTaskByTaskId,getTasks,saveTask,updateTaskStatus,updateTaskSection,deleteTaskController,getByProjectIdController}
+const addTask=async(req,res)=>{
+    try {
+        await saveTask(req.body)
+        res.status(httpStatus.OK).send("Task Saved")
+    } catch (error) {
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error)
+    }
+}
+module.exports={getTaskByTaskId,getTasks,saveTask,updateTaskStatus,updateTaskSection,deleteTaskController,getByProjectIdController,addTask}

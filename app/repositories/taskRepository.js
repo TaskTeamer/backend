@@ -11,6 +11,19 @@ const getByProjectId=async function(projectId){
     return await ( await db.query("select tasks.id,tasks.title,tasks.creator_id,tasks.create_date,tasks.project_id,tasks.end_date,tasks.status_id,tasks.section_id from tasks inner join projects on tasks.project_id=projects.id where project_id="+projectId)).rows
 }
 
+const saveTask=async(task)=>{
+    const title=task.title
+    const description=task.description;
+    const creatorId=task.creatorId;
+    const createDate=task.createDate;
+    const endDate=task.endDate;
+    const statusId=task.statusId;
+    const sectionId=task.sectionId;
+    const projectId=task.projectId;
+    await db.query("insert into tasks (title,description,creator_id,create_date,end_date,status_id,section_id,project_id) values ($1,$2,$3,$4,$5,$6,$7,$8)",[title,description,creatorId,createDate,endDate,statusId,sectionId,projectId])
+
+}
+
 const save=async function(req){
     const task_id=req.body.task_id
     const title=req.body.title
@@ -39,4 +52,4 @@ const deleteTask=async(taskId)=>{
     await db.query("delete from tasks where id=$1",[taskId])
 
 }
-module.exports={getAll,save,getByTaskId,changeTaskStatus,changeTaskSection,deleteTask,getByProjectId}
+module.exports={getAll,save,getByTaskId,changeTaskStatus,changeTaskSection,deleteTask,getByProjectId,saveTask}
