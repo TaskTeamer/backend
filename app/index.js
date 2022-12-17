@@ -19,7 +19,7 @@ app.use(cors())
 app.get("/users",getUsers)
 app.get("/users/getbyusername/:username",getUserByUserNameController)
 app.post("/users/login",login)
-app.post("/users",register)
+app.post("/users/register",register)
 
 app.get("/projects/getbyuserid/:userid",getProjectByUserId)
 app.post("/projects",saveProjectController)
