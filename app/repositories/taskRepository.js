@@ -21,4 +21,19 @@ const save=async function(req){
     await db.query("insert into users (task_id,title,description,creator_id,create_date,end_date,status_id,section_id,project_id) values ($1,$2,$3,$4,$5,$6,$7,$8,$9)",[task_id,description,creator_id,create_date,end_date,status_id,section_id,project_id])
     
 }
-module.exports={getAll,save,getByTaskId}
+const changeTaskStatus=async(statusAndTaskId)=>{
+    const taskId=statusAndTaskId.taskId;
+    const statusId=statusAndTaskId.statusId;
+    await db.query("update tasks set status_id=$1 where id=$2",[statusId,taskId])
+}
+const changeTaskSection=async(sectionAndTaskId)=>{
+    const taskId=sectionAndTaskId.taskId;
+    const sectionId=sectionAndTaskId.sectionId;
+    await db.query("update tasks set section_id=$1 where id=$2",[sectionId,taskId])
+
+}
+const deleteTask=async(taskId)=>{
+    await db.query("delete from tasks where id=$1",[taskId])
+
+}
+module.exports={getAll,save,getByTaskId,changeTaskStatus,changeTaskSection,deleteTask}
