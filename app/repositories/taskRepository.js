@@ -52,6 +52,9 @@ const deleteTask=async(taskId)=>{
     await db.query("delete from tasks where id=$1",[taskId])
 
 }
+const findTaskUsersByTaskId=async(taskId)=>{
+    return await (await db.query("select users.id,users.first_name,users.last_name,users.user_name,user_tasks.task_id from user_tasks inner join users on user_tasks.assigned_id=users.id where task_id="+taskId)).rows
+}
 const assignTask=async(assignedTask)=>{
     let addedBy=assignedTask.addedBy
     let taskId=assignedTask.taskId
@@ -63,4 +66,4 @@ const assignTask=async(assignedTask)=>{
     console.log('first', query.substring(0,query.length-1))
     await db.query("insert into user_tasks (assigned_id,task_id,added_by) values "+ query.substring(0,query.length-1))
 }
-module.exports={getAll,save,getByTaskId,changeTaskStatus,changeTaskSection,deleteTask,getByProjectId,saveTask,assignTask}
+module.exports={getAll,save,getByTaskId,changeTaskStatus,changeTaskSection,deleteTask,getByProjectId,saveTask,assignTask,findTaskUsersByTaskId}

@@ -1,5 +1,5 @@
 const httpStatus = require("http-status")
-const {getByTaskId,getAll,save,changeTaskStatus,changeTaskSection,deleteTask,getByProjectId,saveTask,assignTask}=require("../repositories/taskRepository")
+const {getByTaskId,getAll,changeTaskStatus,changeTaskSection,deleteTask,getByProjectId,saveTask,assignTask,findTaskUsersByTaskId}=require("../repositories/taskRepository")
 
 const getTaskByTaskId=async function(req,res){
     try{
@@ -73,4 +73,11 @@ const assignUserToTask=async(req,res)=>{
         res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error)
     }
 }
-module.exports={getTaskByTaskId,getTasks,saveTask,updateTaskStatus,updateTaskSection,deleteTaskController,getByProjectIdController,addTask,assignUserToTask}
+const getTaskUsersByTaskId=async(req,res)=>{
+    try {
+        res.status(httpStatus.OK).send(await findTaskUsersByTaskId(req.params.taskId))
+    } catch (error) {
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error)
+    }
+}
+module.exports={getTaskByTaskId,getTasks,saveTask,updateTaskStatus,updateTaskSection,deleteTaskController,getByProjectIdController,addTask,assignUserToTask,getTaskUsersByTaskId}
