@@ -7,6 +7,9 @@ const getByTaskId = async function(taskid){
     return await ( await db.query("Select tasks.id,tasks.title,tasks.description,tasks.creator_id,tasks.create_date,tasks.end_date,tasks.status_id,tasks.section_id,tasks.project_id from tasks INNER JOIN projects ON tasks.project_id = projects.id WHERE tasks.id=1")).rows
     //return await ( await db.query('Select user_tasks.id, users.id,users.first_name,users.last_name,users.user_name,users.password,users.email,tasks.id,tasks.title,tasks.description,tasks.creator_id,tasks.create_date,tasks.end_date,tasks.status_id,tasks.section_id,tasks.project_id from tasks INNER JOIN projects ON tasks.project_id = projects.id INNER JOIN user_tasks ON tasks.id=user_tasks.task_id INNER JOIN users ON user_tasks.id = users.id WHERE tasks.id=1')).rows
 }
+const getByProjectId=async function(projectId){
+    return await ( await db.query("select tasks.id,tasks.title,tasks.creator_id,tasks.create_date,tasks.project_id,tasks.end_date,tasks.status_id,tasks.section_id from tasks inner join projects on tasks.project_id=projects.id where project_id="+projectId)).rows
+}
 
 const save=async function(req){
     const task_id=req.body.task_id
@@ -36,4 +39,4 @@ const deleteTask=async(taskId)=>{
     await db.query("delete from tasks where id=$1",[taskId])
 
 }
-module.exports={getAll,save,getByTaskId,changeTaskStatus,changeTaskSection,deleteTask}
+module.exports={getAll,save,getByTaskId,changeTaskStatus,changeTaskSection,deleteTask,getByProjectId}
