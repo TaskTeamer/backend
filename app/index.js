@@ -4,6 +4,7 @@ const {register,getUsers,login,getUserByUserNameController}=require("./router/us
 const {getProjectByUserId,saveProjectController,deleteProjectController}=require("./router/projectRouter")
 const {getTaskByTaskId,updateTaskStatus,updateTaskSection,deleteTaskController,getByProjectIdController,addTask,assignUserToTask,getTaskUsersByTaskId}=require("./router/taskRouter")
 const db=require("./config/db")
+const cors=require('cors')
 db.connect().then("Db Connected").catch(e=>console.log(e))
 
 
@@ -12,6 +13,8 @@ db.connect().then("Db Connected").catch(e=>console.log(e))
 
 const app=express()
 app.use(express.json())
+app.use(cors())
+
 
 app.get("/users",getUsers)
 app.get("/users/getbyusername/:username",getUserByUserNameController)
@@ -22,7 +25,7 @@ app.get("/projects/getbyuserid/:userid",getProjectByUserId)
 app.post("/projects",saveProjectController)
 app.delete("/projects/:id",deleteProjectController)
 
-app.get("/tasks/getbyuserid/:userid",getTaskByTaskId)
+
 app.get("/tasks/getbyprojectid/:projectId",getByProjectIdController)
 app.get("/tasks/gettaskusers/:taskId",getTaskUsersByTaskId)
 app.post("/tasks",addTask)
