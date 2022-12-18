@@ -37,7 +37,8 @@ const login=(req,res)=>{
                 accessToken:generateAccessToken(user),
                 refreshToken:generateRefreshToken(user)
             },
-            user:user.id
+            user:user.id,
+            username:user.user_name
         }
         delete user.password;
         res.status(httpStatus.OK).send(user);
