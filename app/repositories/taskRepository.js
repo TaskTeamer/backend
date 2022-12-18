@@ -11,6 +11,41 @@ const getByProjectId=async function(projectId){
     return await ( await db.query("select tasks.id,tasks.title,tasks.creator_id,tasks.create_date,tasks.project_id,tasks.end_date,tasks.status_id,tasks.section_id from tasks inner join projects on tasks.project_id=projects.id where project_id="+projectId)).rows
 }
 
+const getByProjectIdWithUsers=async function(projectId){
+    let rows= await ( await db.query("select tasks.id,user_tasks.assigned_id,tasks.title,tasks.description,tasks.create_date,tasks.end_date,users.user_name,users.email from tasks inner join user_tasks on tasks.id=user_tasks.task_id inner join users on user_tasks.assigned_id=users.id where tasks.project_id="+projectId+" order by users.id asc")).rows
+    let newJsonList=[]
+    let idList=[]
+    for (let i = 0; i < rows.length; i++) {
+        
+        if(!idList.includes(rows[i].assigned_id)){
+            idList.push(rows[i].assigned_id)
+            newJsonList.push({user:rows[i],projectList:[]})
+        }
+        
+    }
+    for (let j = 0; j < newJsonList.length; j++) {
+          for (let i = 0; i < rows.length; i++) {
+            
+            if (newJsonList[j].user.assigned_id===rows[i].assigned_id) {
+                console.log('newJsonList[j].assigned_id', newJsonList[j].user.assigned_id)
+                console.log('rows[i].assigned_id', rows[i].assigned_id)
+                newJsonList[j].projectList.push({title:rows[i].title,description:rows[i].description,create_date:rows[i].create_date,end_date:rows[i].end_date})
+            }
+          }
+    }
+    let resultList=[]
+    newJsonList.map(e=>{
+        let jsonObject={
+            id:e.user.assigned_id,
+            user_name:e.user.user_name,
+            email:e.user.email
+        }
+        resultList.push({user:jsonObject,projectList:e.projectList})
+    })
+    return resultList
+    
+}
+
 const saveTask=async(task)=>{
     const title=task.title
     const description=task.description;
@@ -66,4 +101,4 @@ const assignTask=async(assignedTask)=>{
     console.log('first', query.substring(0,query.length-1))
     await db.query("insert into user_tasks (assigned_id,task_id,added_by) values "+ query.substring(0,query.length-1))
 }
-module.exports={getAll,save,getByTaskId,changeTaskStatus,changeTaskSection,deleteTask,getByProjectId,saveTask,assignTask,findTaskUsersByTaskId}
+module.exports={getAll,save,getByTaskId,changeTaskStatus,changeTaskSection,deleteTask,getByProjectId,saveTask,assignTask,findTaskUsersByTaskId,getByProjectIdWithUsers}
