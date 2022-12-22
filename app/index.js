@@ -3,8 +3,10 @@ const express=require('express')
 const {register,getUsers,login,getUserByUserNameController}=require("./router/userRouter")
 const {getProjectByUserId,saveProjectController,deleteProjectController}=require("./router/projectRouter")
 const {getTaskByTaskId,updateTaskStatus,updateTaskSection,deleteTaskController,getByProjectIdController,addTask,assignUserToTask,getTaskUsersByTaskId,getTaskByProjectIdWithUserController}=require("./router/taskRouter")
+const {getAllStatus}=require("./router/statusRouter")
 const db=require("./config/db")
 const cors=require('cors')
+const { getAllSection } = require('./router/sectionRouter')
 db.connect().then("Db Connected").catch(e=>console.log(e))
 
 
@@ -34,6 +36,10 @@ app.post("/tasks/assignusertotask",assignUserToTask)
 app.put("/tasks/updatestatus",updateTaskStatus)
 app.put("/tasks/updatesection",updateTaskSection)
 app.delete("/tasks/:id",deleteTaskController)
+
+app.get("/statuses",getAllStatus)
+
+app.get("/sections",getAllSection)
 
 /*app.get("/tasks",getTasks)
 app.post("/tasks",register)*/
