@@ -19,6 +19,7 @@ const saveProject=async(project)=>{
     await db.query("insert into projects (name,team_id,creator_id) values ($1,$2,$3)",[project.name,newTeam[0].id,ownerId])
 
 }
+
 const deleteProject=async(id)=>{
     let projects=await (await db.query("select * from projects where id=$1",[id])).rows
     project=projects[0];

@@ -64,7 +64,7 @@ const getActiveTaskByProjectIdWithUsers=async function(projectId){
             if (newJsonList[j].user.assigned_id===rows[i].assigned_id) {
                 console.log('newJsonList[j].assigned_id', newJsonList[j].user.assigned_id)
                 console.log('rows[i].assigned_id', rows[i].assigned_id)
-                newJsonList[j].projectList.push({title:rows[i].title,description:rows[i].description,create_date:rows[i].create_date,end_date:rows[i].end_date})
+                newJsonList[j].projectList.push({id:rows[i].id,title:rows[i].title,description:rows[i].description,create_date:rows[i].create_date,end_date:rows[i].end_date})
             }
           }
     }
@@ -100,7 +100,7 @@ const getBacklogTaskByProjectIdWithUsers=async function(projectId){
           for (let i = 0; i < rows.length; i++) {
             
             if (newJsonList[j].user.assigned_id===rows[i].assigned_id) {
-                newJsonList[j].projectList.push({title:rows[i].title,description:rows[i].description,create_date:rows[i].create_date,end_date:rows[i].end_date})
+                newJsonList[j].projectList.push({id:rows[i].id,title:rows[i].title,description:rows[i].description,create_date:rows[i].create_date,end_date:rows[i].end_date})
             }
           }
     }
