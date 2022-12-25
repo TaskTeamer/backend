@@ -21,8 +21,8 @@ app.use(cors())
 
 app.get("/users",authenticateToken,getUsers)
 app.get("/users/getbyusername/:username",authenticateToken,getUserByUserNameController)
-app.post("/users/login",authenticateToken,login)
-app.post("/users/register",authenticateToken,register)
+app.post("/users/login",login)
+app.post("/users/register",register)
 
 app.get("/projects/getbyuserid/:userid",authenticateToken,getProjectByUserId)
 app.post("/projects",authenticateToken,saveProjectController)
