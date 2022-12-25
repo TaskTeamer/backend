@@ -12,7 +12,7 @@ const getByProjectId=async function(projectId){
 }
 
 const getByProjectIdWithUsers=async function(projectId){
-    let rows= await ( await db.query("select tasks.id,user_tasks.assigned_id,tasks.title,tasks.description,tasks.create_date,tasks.end_date,users.user_name,users.email from tasks inner join user_tasks on tasks.id=user_tasks.task_id inner join users on user_tasks.assigned_id=users.id where tasks.project_id="+projectId+" order by users.id asc")).rows
+    let rows= await ( await db.query("select tasks.id,user_tasks.assigned_id,tasks.title,tasks.description,tasks.section_id,sections.name,tasks.create_date,tasks.end_date,users.user_name,users.email from tasks inner join user_tasks on tasks.id=user_tasks.task_id inner join users on user_tasks.assigned_id=users.id inner join sections on tasks.section_id=sections.id where tasks.project_id="+projectId+" order by users.id asc")).rows
     let newJsonList=[]
     let idList=[]
     for (let i = 0; i < rows.length; i++) {
@@ -29,7 +29,7 @@ const getByProjectIdWithUsers=async function(projectId){
             if (newJsonList[j].user.assigned_id===rows[i].assigned_id) {
                 console.log('newJsonList[j].assigned_id', newJsonList[j].user.assigned_id)
                 console.log('rows[i].assigned_id', rows[i].assigned_id)
-                newJsonList[j].projectList.push({title:rows[i].title,description:rows[i].description,create_date:rows[i].create_date,end_date:rows[i].end_date})
+                newJsonList[j].projectList.push({title:rows[i].title,description:rows[i].description,section_id:rows[i].section_id,section_name:rows[i].name,create_date:rows[i].create_date,end_date:rows[i].end_date})
             }
           }
     }
@@ -47,7 +47,7 @@ const getByProjectIdWithUsers=async function(projectId){
 }
 
 const getActiveTaskByProjectIdWithUsers=async function(projectId){
-    let rows= await ( await db.query("select tasks.id,user_tasks.assigned_id,tasks.title,tasks.description,tasks.create_date,tasks.end_date,users.user_name,users.email from tasks inner join user_tasks on tasks.id=user_tasks.task_id inner join users on user_tasks.assigned_id=users.id where tasks.project_id="+projectId+"  and tasks.status_id=2 order by users.id asc")).rows
+    let rows= await ( await db.query("select tasks.id,user_tasks.assigned_id,tasks.title,tasks.description,tasks.section_id,sections.name,tasks.create_date,tasks.end_date,users.user_name,users.email from tasks inner join user_tasks on tasks.id=user_tasks.task_id inner join users on user_tasks.assigned_id=users.id inner join sections on tasks.section_id=sections.id where tasks.project_id="+projectId+"  and tasks.status_id=2 order by users.id asc")).rows
     let newJsonList=[]
     let idList=[]
     for (let i = 0; i < rows.length; i++) {
@@ -64,7 +64,7 @@ const getActiveTaskByProjectIdWithUsers=async function(projectId){
             if (newJsonList[j].user.assigned_id===rows[i].assigned_id) {
                 console.log('newJsonList[j].assigned_id', newJsonList[j].user.assigned_id)
                 console.log('rows[i].assigned_id', rows[i].assigned_id)
-                newJsonList[j].projectList.push({id:rows[i].id,title:rows[i].title,description:rows[i].description,create_date:rows[i].create_date,end_date:rows[i].end_date})
+                newJsonList[j].projectList.push({id:rows[i].id,title:rows[i].title,description:rows[i].description,section_id:rows[i].section_id,section_name:rows[i].name,create_date:rows[i].create_date,end_date:rows[i].end_date})
             }
           }
     }
@@ -85,7 +85,7 @@ const getActiveTaskByProjectIdWithUsers=async function(projectId){
 
 
 const getBacklogTaskByProjectIdWithUsers=async function(projectId){
-    let rows= await ( await db.query("select tasks.id,user_tasks.assigned_id,tasks.title,tasks.description,tasks.create_date,tasks.end_date,users.user_name,users.email from tasks inner join user_tasks on tasks.id=user_tasks.task_id inner join users on user_tasks.assigned_id=users.id where tasks.project_id="+projectId+" and tasks.status_id=1 order by users.id asc")).rows
+    let rows= await ( await db.query("select tasks.id,user_tasks.assigned_id,tasks.title,tasks.description,tasks.section_id,sections.name,tasks.create_date,tasks.end_date,users.user_name,users.email from tasks inner join user_tasks on tasks.id=user_tasks.task_id inner join users on user_tasks.assigned_id=users.id inner join sections on tasks.section_id=sections.id where tasks.project_id="+projectId+" and tasks.status_id=1 order by users.id asc")).rows
     let newJsonList=[]
     let idList=[]
     for (let i = 0; i < rows.length; i++) {
@@ -100,7 +100,7 @@ const getBacklogTaskByProjectIdWithUsers=async function(projectId){
           for (let i = 0; i < rows.length; i++) {
             
             if (newJsonList[j].user.assigned_id===rows[i].assigned_id) {
-                newJsonList[j].projectList.push({id:rows[i].id,title:rows[i].title,description:rows[i].description,create_date:rows[i].create_date,end_date:rows[i].end_date})
+                newJsonList[j].projectList.push({id:rows[i].id,title:rows[i].title,description:rows[i].description,section_id:rows[i].section_id,section_name:rows[i].name,create_date:rows[i].create_date,end_date:rows[i].end_date})
             }
           }
     }
