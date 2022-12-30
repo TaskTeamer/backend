@@ -1,5 +1,5 @@
 
-const {getByUserId,saveProject,deleteProject}=require("../repositories/projectRepository")
+const {getByUserId,saveProject,deleteProject,addUserToProject}=require("../repositories/projectRepository")
 const httpStatus=require("http-status")
 
 
@@ -30,4 +30,13 @@ const deleteProjectController=async function(req,res){
         res.status(httpStatus.BAD_REQUEST).send("Bad Request")
     }
 }
-module.exports={getProjectByUserId,saveProjectController,deleteProjectController}
+const addUserToProjectController=async(req,res)=>{
+    try{
+        addUserToProject(req.body)
+        res.status(httpStatus.OK).send("User Added")
+
+    }catch{
+        res.status(httpStatus.BAD_REQUEST).send("Bad Request")
+    }
+}
+module.exports={getProjectByUserId,saveProjectController,deleteProjectController,addUserToProjectController}

@@ -1,7 +1,7 @@
 const dotenv=require('dotenv').config()
 const express=require('express')
 const {register,getUsers,login,getUserByUserNameController}=require("./router/userRouter")
-const {getProjectByUserId,saveProjectController,deleteProjectController}=require("./router/projectRouter")
+const {getProjectByUserId,saveProjectController,deleteProjectController,addUserToProjectController}=require("./router/projectRouter")
 const {getTasks,updateTaskStatus,updateTaskSection,deleteTaskController,getByProjectIdController,addTask,assignUserToTask,getTaskUsersByTaskId,getTaskByProjectIdWithUserController,getActiveTask,getBacklogTask}=require("./router/taskRouter")
 const {authenticateToken}=require("./middlewares/authenticate.js")
 const {getAllStatus}=require("./router/statusRouter")
@@ -25,6 +25,7 @@ app.post("/users/login",login)
 app.post("/users/register",register)
 
 app.get("/projects/getbyuserid/:userid",authenticateToken,getProjectByUserId)
+app.post("/projects/addusertoproject",addUserToProjectController)
 app.post("/projects",authenticateToken,saveProjectController)
 app.delete("/projects/:id",authenticateToken,deleteProjectController)
 

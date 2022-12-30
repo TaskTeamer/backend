@@ -13,6 +13,7 @@ const getByProjectId=async function(projectId){
 
 const getByProjectIdWithUsers=async function(projectId){
     let rows= await ( await db.query("select tasks.id,user_tasks.assigned_id,tasks.title,tasks.description,tasks.section_id,sections.name,tasks.create_date,tasks.end_date,users.user_name,users.email from tasks inner join user_tasks on tasks.id=user_tasks.task_id inner join users on user_tasks.assigned_id=users.id inner join sections on tasks.section_id=sections.id where tasks.project_id="+projectId+" order by users.id asc")).rows
+    console.log('rows', rows)
     let newJsonList=[]
     let idList=[]
     for (let i = 0; i < rows.length; i++) {
@@ -128,7 +129,13 @@ const saveTask=async(task)=>{
     const statusId=task.statusId;
     const sectionId=task.sectionId;
     const projectId=task.projectId;
-    await db.query("insert into tasks (title,description,creator_id,create_date,end_date,status_id,section_id,project_id) values ($1,$2,$3,$4,$5,$6,$7,$8)",[title,description,creatorId,createDate,endDate,statusId,sectionId,projectId])
+    let taskId= await db.query("insert into tasks (title,description,creator_id,create_date,end_date,status_id,section_id,project_id) values ($1,$2,$3,$4,$5,$6,$7,$8)",[title,description,creatorId,createDate,endDate,statusId,sectionId,projectId])
+    let assignData={
+        addedBy:creatorId,
+        taskId:taskId,
+        listOfAssigned:[creatorId]
+    }
+    assignTask(assignData)
 
 }
 
