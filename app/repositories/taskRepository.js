@@ -129,13 +129,16 @@ const saveTask=async(task)=>{
     const statusId=task.statusId;
     const sectionId=task.sectionId;
     const projectId=task.projectId;
-    let taskId= await db.query("insert into tasks (title,description,creator_id,create_date,end_date,status_id,section_id,project_id) values ($1,$2,$3,$4,$5,$6,$7,$8)",[title,description,creatorId,createDate,endDate,statusId,sectionId,projectId])
+    let taskId=await( await db.query("insert into tasks (title,description,creator_id,create_date,end_date,status_id,section_id,project_id) values ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *",[title,description,creatorId,createDate,endDate,statusId,sectionId,projectId])).rows[0].id
     let assignData={
         addedBy:creatorId,
         taskId:taskId,
         listOfAssigned:[creatorId]
     }
-    assignTask(assignData)
+
+        assignTask(assignData)
+
+    
 
 }
 
