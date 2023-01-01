@@ -35,8 +35,8 @@ const addUserToProjectController=async(req,res)=>{
         await addUserToProject(req.body)
         res.status(httpStatus.OK).send("User Added")
 
-    }catch{
-        res.status(httpStatus.BAD_REQUEST).send("Bad Request")
+    }catch(e){
+        res.status(httpStatus.BAD_REQUEST).send(e)
     }
 }
 module.exports={getProjectByUserId,saveProjectController,deleteProjectController,addUserToProjectController}

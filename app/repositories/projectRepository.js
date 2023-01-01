@@ -43,8 +43,8 @@ const deleteProject=async(id)=>{
 const addUserToProject=async(data)=>{
     let userName=data.userName;
     let projectId=data.projectId;
-    let project=await (await db.query("select * from projects where projectId="+projectId)).rows[0]
-    let user=await db.query("select * from users where user_name="+userName)[0]
+    let project=await (await db.query("select * from projects where id="+projectId)).rows[0]
+    let user=await (await db.query("select * from users where user_name=$1",[userName])).rows[0]
     return await db.query("insert into team_users (user_id,team_id) values ($1,$2)",[user.id,project.team_id])
 }
 module.exports={getByUserId,saveProject,deleteProject,addUserToProject}
