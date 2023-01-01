@@ -30,9 +30,11 @@ const deleteProject=async(id)=>{
         taskUserDeleteQuery+=" task_id="+t.id+" or"
     })
     let taskUserDeleteNewQuery="delete from user_tasks where "+taskUserDeleteQuery.substring(0,taskUserDeleteQuery.length-2)
+    if(alltasks.length!==0){
+        await db.query(taskUserDeleteNewQuery)
+    }
     console.log('teamId', teamId)
-    console.log('project', project)
-    await db.query(taskUserDeleteNewQuery)
+    console.log('project', project)    
     await db.query("delete from tasks where project_id=$1",[project.id])
     await db.query("delete from projects where id=$1",[project.id])
     await db.query("delete from team_users where team_id=$1",[teamId])

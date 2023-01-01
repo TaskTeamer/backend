@@ -167,6 +167,7 @@ const changeTaskSection=async(sectionAndTaskId)=>{
 
 }
 const deleteTask=async(taskId)=>{
+    await db.query("delete from user_tasks where task_id=$1",[taskId])
     await db.query("delete from tasks where id=$1",[taskId])
 
 }
