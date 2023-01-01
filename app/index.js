@@ -50,7 +50,7 @@ app.get("/sections",authenticateToken,getAllSection)
 app.post("/tasks",register)*/
 
 
-app.listen(3000,()=>{
+app.listen(3002,()=>{
     console.log(process.env.DBPASSWORD)
     console.log("Server up!")
 })

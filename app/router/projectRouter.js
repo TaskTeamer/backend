@@ -14,25 +14,25 @@ const getProjectByUserId=async function(req,res){
 }
 const saveProjectController=async function(req,res){
     try{
-        saveProject(req.body)
+        await saveProject(req.body)
         res.status(httpStatus.CREATED).send("Created")
 
-    }catch{
-        res.status(httpStatus.BAD_REQUEST).send("Bad Request")
+    }catch(e){
+        res.status(httpStatus.BAD_REQUEST).send(e)
     }
 }
 const deleteProjectController=async function(req,res){
     try{
-        deleteProject(req.params.id)
+        await deleteProject(req.params.id)
         res.status(httpStatus.OK).send("Deleted")
 
-    }catch{
-        res.status(httpStatus.BAD_REQUEST).send("Bad Request")
+    }catch(e){
+        res.status(httpStatus.BAD_REQUEST).send(e)
     }
 }
 const addUserToProjectController=async(req,res)=>{
     try{
-        addUserToProject(req.body)
+        await addUserToProject(req.body)
         res.status(httpStatus.OK).send("User Added")
 
     }catch{
